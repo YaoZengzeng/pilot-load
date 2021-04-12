@@ -10,7 +10,7 @@ data:
     nodeMetadata: {}
     gracePeriod: 10s
     jitter:
-      workloads: "1s"
+      workloads: "1h"
       config: "15s"
     namespaces:
     - name: mesh

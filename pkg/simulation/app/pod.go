@@ -143,7 +143,12 @@ func (p *Pod) getPod() *v1.Pod {
 		},
 		Status: v1.PodStatus{
 			Phase:      v1.PodRunning,
-			Conditions: nil,
+			Conditions: []v1.PodCondition{
+				{
+					Type: v1.PodReady,
+					Status: v1.ConditionTrue,
+				},
+			},
 			PodIP:      s.IP,
 			PodIPs:     []v1.PodIP{{s.IP}},
 		},
