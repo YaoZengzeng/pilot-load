@@ -11,7 +11,7 @@ data:
     gracePeriod: 10s
     jitter:
       workloads: "1h"
-      config: "15s"
+      config: "1h"
     namespaces:
     - name: mesh
       replicas: 64
@@ -40,4 +40,4 @@ data:
         podType: router
         gateways:
           name: main
-          enabled: true
+          replicas: 1

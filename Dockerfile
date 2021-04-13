@@ -1,18 +1,8 @@
-FROM golang:1.15.7-alpine AS base
+FROM golang:1.15 as builder
 WORKDIR /src
-ENV CGO_ENABLED=0
-COPY go.* .
-RUN --mount=type=cache,target=/go/pkg/mod \
-    go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOARCH=amd64 go build
 
-FROM base AS build
-RUN --mount=target=. \
-    --mount=type=cache,target=/go/pkg/mod \
-    --mount=type=cache,target=/root/.cache/go-build \
-    go build -o /out/pilot-load .
-
-FROM howardjohn/shell
-
-COPY --from=build /out/pilot-load /usr/bin/pilot-load
-
+FROM gcr.io/distroless/base-debian10
+COPY --from=builder /src/pilot-load /usr/bin/
 ENTRYPOINT ["/usr/bin/pilot-load"]
