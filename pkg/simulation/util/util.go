@@ -8,6 +8,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 func AddError(e1, e2 error) error {
@@ -19,8 +21,6 @@ func AddError(e1, e2 error) error {
 	}
 	return fmt.Errorf("%v and %v", e1, e2)
 }
-
-var chars = []rune("abcdefghijklmnopqrstuvwxyz")
 
 func StringPointer(s string) *string {
 	return &s
@@ -58,18 +58,14 @@ func init() {
 }
 
 func GenUID() string {
-	length := 8
-	var b strings.Builder
-	for i := 0; i < length; i++ {
-		b.WriteRune(chars[rand.Intn(len(chars))])
-	}
-	return b.String()
+	parts := strings.Split(uuid.New().String(), "-")
+	return parts[0]
 }
 
 var (
 	ipMutex sync.Mutex
 	// This is to prevent multi pilot load generate pods with same ip.
-	nextIp  = net.ParseIP(fmt.Sprintf("%d.%d.0.10", rand.Intn(255)+1, rand.Intn(255)+1))
+	nextIp = net.ParseIP(fmt.Sprintf("%d.%d.0.10", (uuid.New().ID()%255)+1, uuid.New().ID()%255))
 )
 
 func GetIP() string {
