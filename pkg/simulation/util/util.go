@@ -68,7 +68,8 @@ func GenUID() string {
 
 var (
 	ipMutex sync.Mutex
-	nextIp  = net.ParseIP("10.0.0.10")
+	// This is to prevent multi pilot load generate pods with same ip.
+	nextIp  = net.ParseIP(fmt.Sprintf("%d.%d.0.10", rand.Intn(255)+1, rand.Intn(255)+1))
 )
 
 func GetIP() string {
