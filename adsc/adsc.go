@@ -273,6 +273,10 @@ func (a *ADSC) handleRecv() {
 		case resource.RouteType:
 			a.handleRDS(routes)
 		}
+		listeners = nil
+		clusters = nil
+		eds = nil
+		routes = nil
 	}
 }
 
