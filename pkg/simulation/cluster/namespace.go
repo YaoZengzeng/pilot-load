@@ -11,6 +11,7 @@ import (
 
 type NamespaceSpec struct {
 	Name        string
+	Sidecar     bool
 	Deployments []model.ApplicationConfig
 }
 
@@ -36,7 +37,9 @@ func NewNamespace(s NamespaceSpec) *Namespace {
 			Name:      "default",
 		}),
 	}
-	ns.sidecar = config.NewSidecar(config.SidecarSpec{Namespace: s.Name})
+	if s.Sidecar {
+		ns.sidecar = config.NewSidecar(config.SidecarSpec{Namespace: s.Name})
+	}
 	for _, d := range s.Deployments {
 		for r := 0; r < d.Replicas; r++ {
 			ns.deployments = append(ns.deployments, ns.createDeployment(d))
@@ -65,7 +68,10 @@ func (n *Namespace) InsertDeployment(ctx model.Context, args model.ApplicationCo
 }
 
 func (n *Namespace) getSims() []model.Simulation {
-	sims := []model.Simulation{n.ns, n.sidecar}
+	sims := []model.Simulation{n.ns}
+	if n.sidecar != nil {
+		sims = append(sims, n.sidecar)
+	}
 	for _, sa := range n.sa {
 		sims = append(sims, sa)
 	}

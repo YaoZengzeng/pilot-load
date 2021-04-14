@@ -7,10 +7,11 @@ import (
 	"fmt"
 	"time"
 
+	"golang.org/x/sync/errgroup"
+
 	"github.com/howardjohn/pilot-load/pkg/kube"
 	"github.com/howardjohn/pilot-load/pkg/simulation/security"
 	"github.com/howardjohn/pilot-load/pkg/simulation/util"
-	"golang.org/x/sync/errgroup"
 
 	"istio.io/pkg/log"
 )
@@ -95,7 +96,9 @@ type GatewayConfig struct {
 }
 
 type NamespaceConfig struct {
-	Name         string              `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
+	// Indicates whether to enable sidecar isolation for this namespace.
+	Sidecar      bool                `json:"sidecar,omitempty"`
 	Replicas     int                 `json:"replicas,omitempty"`
 	Applications []ApplicationConfig `json:"applications,omitempty"`
 }

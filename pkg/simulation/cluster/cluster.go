@@ -48,6 +48,7 @@ func NewCluster(s ClusterSpec) *Cluster {
 			}
 			cluster.namespaces = append(cluster.namespaces, NewNamespace(NamespaceSpec{
 				Name:        name,
+				Sidecar:     ns.Sidecar,
 				Deployments: deployments,
 			}))
 		}
