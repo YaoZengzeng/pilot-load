@@ -261,7 +261,7 @@ func (a *ADSC) handleRecv() {
 		// 	a.Responses.Routes = resp
 		// }
 		a.ack(msg, names)
-		a.mutex.Unlock()
+		// a.mutex.Unlock()
 
 		switch msg.TypeUrl {
 		case resource.ListenerType:
