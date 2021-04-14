@@ -221,45 +221,45 @@ func (a *ADSC) handleRecv() {
 		eds := []*endpoint.ClusterLoadAssignment{}
 		// TODO re-enable use of names. For now its skipped
 		names := []string{}
-		resp := map[string]proto.Message{}
+		// resp := map[string]proto.Message{}
 		for _, rsc := range msg.Resources {
 			valBytes := rsc.Value
 			if rsc.TypeUrl == resource.ListenerType {
 				ll := &listener.Listener{}
 				_ = proto.Unmarshal(valBytes, ll)
 				listeners = append(listeners, ll)
-				resp[ll.Name] = ll
+				// resp[ll.Name] = ll
 			} else if rsc.TypeUrl == resource.ClusterType {
 				ll := &cluster.Cluster{}
 				_ = proto.Unmarshal(valBytes, ll)
 				clusters = append(clusters, ll)
-				resp[ll.Name] = ll
+				// resp[ll.Name] = ll
 			} else if rsc.TypeUrl == resource.EndpointType {
 				ll := &endpoint.ClusterLoadAssignment{}
 				_ = proto.Unmarshal(valBytes, ll)
 				eds = append(eds, ll)
 				names = append(names, ll.ClusterName)
-				resp[ll.ClusterName] = ll
+				// resp[ll.ClusterName] = ll
 			} else if rsc.TypeUrl == resource.RouteType {
 				ll := &route.RouteConfiguration{}
 				_ = proto.Unmarshal(valBytes, ll)
 				routes = append(routes, ll)
 				names = append(names, ll.Name)
-				resp[ll.Name] = ll
+				// resp[ll.Name] = ll
 			}
 		}
 
-		a.mutex.Lock()
-		switch msg.TypeUrl {
-		case resource.ListenerType:
-			a.Responses.Listeners = resp
-		case resource.ClusterType:
-			a.Responses.Clusters = resp
-		case resource.EndpointType:
-			a.Responses.Endpoints = resp
-		case resource.RouteType:
-			a.Responses.Routes = resp
-		}
+		// a.mutex.Lock()
+		// switch msg.TypeUrl {
+		// case resource.ListenerType:
+		// 	a.Responses.Listeners = resp
+		// case resource.ClusterType:
+		// 	a.Responses.Clusters = resp
+		// case resource.EndpointType:
+		// 	a.Responses.Endpoints = resp
+		// case resource.RouteType:
+		// 	a.Responses.Routes = resp
+		// }
 		a.ack(msg, names)
 		a.mutex.Unlock()
 
