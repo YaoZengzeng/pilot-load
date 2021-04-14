@@ -44,12 +44,14 @@ func NewApplication(s ApplicationSpec) *Application {
 		w.pods = append(w.pods, w.makePod())
 	}
 
-	w.endpoint = NewEndpoint(EndpointSpec{
-		Node:      s.Node,
-		App:       s.App,
-		Namespace: s.Namespace,
-		IPs:       w.getIps(),
-	})
+	// TODO:  add an option
+	//  for test in real cluster, this is redundant as endpoint controller will create the endpoints accordingly.
+	// w.endpoint = NewEndpoint(EndpointSpec{
+	// 	Node:      s.Node,
+	// 	App:       s.App,
+	// 	Namespace: s.Namespace,
+	// 	IPs:       w.getIps(),
+	// })
 	w.service = NewService(ServiceSpec{
 		App:       s.App,
 		Namespace: s.Namespace,
@@ -128,7 +130,9 @@ func (w *Application) getSims() []model.Simulation {
 	for _, p := range w.pods {
 		sims = append(sims, p)
 	}
-	sims = append(sims, w.endpoint)
+	if w.endpoint != nil {
+		sims = append(sims, w.endpoint)
+	}
 	return sims
 }
 
