@@ -1,8 +1,6 @@
 package cluster
 
 import (
-	"time"
-
 	"github.com/howardjohn/pilot-load/pkg/simulation/model"
 
 	v1 "k8s.io/api/core/v1"
@@ -26,7 +24,6 @@ func NewKubernetesNamespace(s KubernetesNamespaceSpec) *KubernetesNamespace {
 }
 
 func (n *KubernetesNamespace) Run(ctx model.Context) (err error) {
-	time.Sleep(30 * time.Second)
 	return ctx.Client.Apply(n.getKubernetesNamespace())
 }
 
