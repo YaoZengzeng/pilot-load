@@ -3,15 +3,32 @@ kind: ConfigMap
 metadata:
   name: pilot-load-config
 data:
+  # Each namespace has 1 20 replica service, 5 10 replica services, and 10 3 replica services. 100 pods each
+  # Each service is exposed by a single Gateway, which has 200 instances
+  # Overall this gives 100 * 50 =5000 pods
   config.yaml: |
     nodeMetadata: {}
+    gracePeriod: 10s
     jitter:
-      workloads: "0s"
-      config: "0s"
+      workloads: "24h"
+      config: "24h"
+    adsPercentage: 10
     namespaces:
     - name: mesh
-      replicas: 1
+      replicas: 50
       applications:
-      - name: default
+      - name: big
         replicas: 1
-        instances: 1
+        instances: 20
+        gateways:
+          virtualServices: [main]
+      - name: medium
+        replicas: 5
+        instances: 10
+        gateways:
+          virtualServices: [main]
+      - name: small
+        replicas: 10
+        instances: 3
+        gateways:
+          virtualServices: [main]

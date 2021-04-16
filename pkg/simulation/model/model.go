@@ -121,6 +121,9 @@ func (c ClusterConfig) ApplyDefaults() ClusterConfig {
 	if ret.Nodes == 0 {
 		ret.Nodes = 1
 	}
+	if ret.AdsClientPercentage == 0 {
+		ret.AdsClientPercentage = 100
+	}
 	for n, ns := range ret.Namespaces {
 		if ns.Replicas == 0 {
 			ns.Replicas = 1
