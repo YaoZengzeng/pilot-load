@@ -6,7 +6,9 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/howardjohn/pilot-load/pkg/simulation/model"
 	"github.com/howardjohn/pilot-load/pkg/simulation/util"
@@ -20,6 +22,10 @@ import (
 
 	"istio.io/pkg/log"
 )
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 type PodSpec struct {
 	ServiceAccount string
@@ -74,7 +80,7 @@ func (p *Pod) Run(ctx model.Context) (err error) {
 	}
 	p.created = true
 
-	if p.Spec.PodType != model.ExternalType {
+	if p.Spec.PodType != model.ExternalType && rand.Intn(100) < ctx.Args.ClusterConfig.AdsClientPercentage {
 		if err := sendInjectionRequest(ctx.Args.InjectAddress, pod); err != nil {
 			return err
 		}
@@ -142,15 +148,15 @@ func (p *Pod) getPod() *v1.Pod {
 			NodeName: s.Node,
 		},
 		Status: v1.PodStatus{
-			Phase:      v1.PodRunning,
+			Phase: v1.PodRunning,
 			Conditions: []v1.PodCondition{
 				{
-					Type: v1.PodReady,
+					Type:   v1.PodReady,
 					Status: v1.ConditionTrue,
 				},
 			},
-			PodIP:      s.IP,
-			PodIPs:     []v1.PodIP{{s.IP}},
+			PodIP:  s.IP,
+			PodIPs: []v1.PodIP{{s.IP}},
 		},
 	}
 }

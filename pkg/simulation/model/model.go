@@ -107,11 +107,12 @@ type NamespaceConfig struct {
 // A cluster consists of various namespaces
 type ClusterConfig struct {
 	// Time between each namespace creation at startup
-	GracePeriod  Duration               `json:"gracePeriod,omitempty"`
-	Jitter       ClusterJitterConfig    `json:"jitter,omitempty"`
-	Namespaces   []NamespaceConfig      `json:"namespaces,omitempty"`
-	Nodes        int                    `json:"nodes,omitempty"`
-	NodeMetadata map[string]interface{} `json:"nodeMetadata,omitempty"`
+	GracePeriod         Duration               `json:"gracePeriod,omitempty"`
+	Jitter              ClusterJitterConfig    `json:"jitter,omitempty"`
+	AdsClientPercentage int                    `json:"adsPercentage,omitempty"`
+	Namespaces          []NamespaceConfig      `json:"namespaces,omitempty"`
+	Nodes               int                    `json:"nodes,omitempty"`
+	NodeMetadata        map[string]interface{} `json:"nodeMetadata,omitempty"`
 }
 
 func (c ClusterConfig) ApplyDefaults() ClusterConfig {
