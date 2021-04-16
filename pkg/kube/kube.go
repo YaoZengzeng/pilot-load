@@ -77,8 +77,6 @@ func NewClient(kubeconfig string, qps int) (*Client, error) {
 	}, nil
 }
 
-var deletePeriod int64 = 0
-
 func (c *Client) Informers() informers.SharedInformerFactory {
 	inf := informers.NewSharedInformerFactory(c.Kubernetes, 0)
 	return inf
@@ -99,7 +97,8 @@ func (c *Client) Delete(o runtime.Object) error {
 	cl := c.dynamic.Resource(gvr).Namespace(us.GetNamespace())
 	us.SetGroupVersionKind(gvr.GroupVersion().WithKind(kind))
 	scope.Debugf("deleting resource: %s/%s/%s", us.GetKind(), us.GetName(), us.GetNamespace())
-	return cl.Delete(context.TODO(), us.GetName(), metav1.DeleteOptions{GracePeriodSeconds: &deletePeriod})
+	var policy = metav1.DeletePropagationBackground
+	return cl.Delete(context.TODO(), us.GetName(), metav1.DeleteOptions{PropagationPolicy: &policy})
 }
 
 var scope = log.RegisterScope("kube", "", 0)
