@@ -3,7 +3,6 @@ package cluster
 import (
 	"fmt"
 	"math/rand"
-	"time"
 
 	"github.com/howardjohn/pilot-load/pkg/simulation/app"
 	"github.com/howardjohn/pilot-load/pkg/simulation/model"
@@ -116,7 +115,6 @@ func (c *Cluster) Run(ctx model.Context) error {
 		if err := (model.AggregateSimulation{Simulations: []model.Simulation{ns}}.Run(ctx)); err != nil {
 			return fmt.Errorf("failed to bootstrap nodes: %v", err)
 		}
-		time.Sleep(time.Duration(c.Spec.Config.GracePeriod))
 	}
 
 	log.Infof("cluster %q synced, starting cluster scaler", c.Name)

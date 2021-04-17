@@ -1,6 +1,8 @@
 package cluster
 
 import (
+	"time"
+
 	"github.com/howardjohn/pilot-load/pkg/simulation/model"
 
 	v1 "k8s.io/api/core/v1"
@@ -24,7 +26,13 @@ func NewKubernetesNamespace(s KubernetesNamespaceSpec) *KubernetesNamespace {
 }
 
 func (n *KubernetesNamespace) Run(ctx model.Context) (err error) {
-	return ctx.Client.Apply(n.getKubernetesNamespace())
+	err = ctx.Client.Apply(n.getKubernetesNamespace())
+	if err != nil {
+		return err
+	}
+
+	time.Sleep(time.Duration(ctx.Args.ClusterConfig.GracePeriod))
+	return nil
 }
 
 func (n *KubernetesNamespace) Cleanup(ctx model.Context) error {
