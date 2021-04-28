@@ -79,12 +79,14 @@ const (
 )
 
 type ApplicationConfig struct {
-	Name      string        `json:"name,omitempty"`
-	PodType   PodType       `json:"podType,omitempty"`
-	Replicas  int           `json:"replicas,omitempty"`
-	Instances int           `json:"instances,omitempty"`
-	Gateways  GatewayConfig `json:"gateways,omitempty"`
-	GetNode   func() string `json:"-"`
+	Name            string        `json:"name,omitempty"`
+	PodType         PodType       `json:"podType,omitempty"`
+	Replicas        int           `json:"replicas,omitempty"`
+	Instances       int           `json:"instances,omitempty"`
+	Gateways        GatewayConfig `json:"gateways,omitempty"`
+	GetNode         func() string `json:"-"`
+	VirtualService  bool          `json:"virtualService,omitempty"`
+	DestinationRule bool          `json:"destinationRule,omitempty"`
 }
 
 type GatewayConfig struct {

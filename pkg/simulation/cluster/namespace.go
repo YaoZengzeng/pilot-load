@@ -56,10 +56,12 @@ func (n *Namespace) createDeployment(args model.ApplicationConfig) *app.Applicat
 		Node:      args.GetNode(),
 		Namespace: n.Spec.Name,
 		// TODO implement different service accounts
-		ServiceAccount: "default",
-		Instances:      args.Instances,
-		PodType:        args.PodType,
-		GatewayConfig:  args.Gateways,
+		ServiceAccount:  "default",
+		Instances:       args.Instances,
+		PodType:         args.PodType,
+		GatewayConfig:   args.Gateways,
+		DestinationRule: args.DestinationRule,
+		VirtualService:  args.VirtualService,
 	})
 }
 

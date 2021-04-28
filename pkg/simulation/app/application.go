@@ -11,13 +11,15 @@ import (
 )
 
 type ApplicationSpec struct {
-	App            string
-	Node           string
-	Namespace      string
-	ServiceAccount string
-	Instances      int
-	PodType        model.PodType
-	GatewayConfig  model.GatewayConfig
+	App             string
+	Node            string
+	Namespace       string
+	ServiceAccount  string
+	Instances       int
+	PodType         model.PodType
+	GatewayConfig   model.GatewayConfig
+	VirtualService  bool
+	DestinationRule bool
 }
 
 type Application struct {
@@ -68,14 +70,14 @@ func NewApplication(s ApplicationSpec) *Application {
 			Name:      gw.Name(),
 		}))
 	}
-	if s.PodType != model.ExternalType {
+	if s.DestinationRule && s.PodType != model.ExternalType {
 		w.destRule = config.NewDestinationRule(config.DestinationRuleSpec{
 			App:       s.App,
 			Namespace: s.Namespace,
 			Subsets:   []string{"a"},
 		})
 	}
-	if s.PodType == model.SidecarType || s.GatewayConfig.VirtualServices != nil {
+	if s.VirtualService && s.PodType == model.SidecarType || s.GatewayConfig.VirtualServices != nil {
 		w.virtualService = config.NewVirtualService(config.VirtualServiceSpec{
 			App:       s.App,
 			Namespace: s.Namespace,
