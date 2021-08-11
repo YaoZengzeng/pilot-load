@@ -2,6 +2,9 @@ package config
 
 import (
 	"github.com/howardjohn/pilot-load/pkg/simulation/model"
+
+	"time"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	networkingv1alpha3 "istio.io/api/networking/v1alpha3"
@@ -23,7 +26,9 @@ func NewSidecar(s SidecarSpec) *Sidecar {
 }
 
 func (v *Sidecar) Run(ctx model.Context) (err error) {
-	return ctx.Client.Apply(v.getSidecar())
+	err = ctx.Client.Apply(v.getSidecar())
+	time.Sleep(3 * time.Second)
+	return
 }
 
 func (v *Sidecar) Cleanup(ctx model.Context) error {
