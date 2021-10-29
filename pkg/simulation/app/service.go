@@ -39,9 +39,9 @@ func (s *Service) getService() *v1.Service {
 			TargetPort: intstr.FromInt(80),
 		},
 		{
-			Name:       "https",
-			Port:       443,
-			TargetPort: intstr.FromInt(443),
+			Name:       "grpc",
+			Port:       8000,
+			TargetPort: intstr.FromInt(8000),
 		},
 	}
 	return &v1.Service{
