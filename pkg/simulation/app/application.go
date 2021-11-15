@@ -139,7 +139,7 @@ func (w *Application) getSims() []model.Simulation {
 }
 
 func (w *Application) Run(ctx model.Context) (err error) {
-	return model.AggregateSimulation{Simulations: w.getSims()}.RunParallel(ctx)
+	return model.AggregateSimulation{Simulations: w.getSims()}.Run(ctx)
 }
 
 func (w *Application) Cleanup(ctx model.Context) error {
