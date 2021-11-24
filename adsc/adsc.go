@@ -91,8 +91,9 @@ type ADSC struct {
 	// Updates includes the type of the last update received from the server.
 	Updates chan string
 
-	mutex   sync.Mutex
-	watches map[string]Watch
+	mutex     sync.Mutex
+	watches   map[string]Watch
+	lastNonce string
 }
 
 type Responses struct {
@@ -104,7 +105,6 @@ type Responses struct {
 
 type Watch struct {
 	resources   []string
-	lastNonce   string
 	lastVersion string
 }
 
@@ -541,7 +541,7 @@ const (
 
 func (a *ADSC) request(typeUrl string, watch Watch) {
 	_ = a.send(&discovery.DiscoveryRequest{
-		ResponseNonce: watch.lastNonce,
+		ResponseNonce: a.lastNonce,
 		TypeUrl:       typeUrl,
 		Node:          a.node,
 		VersionInfo:   watch.lastVersion,
@@ -551,7 +551,7 @@ func (a *ADSC) request(typeUrl string, watch Watch) {
 
 func (a *ADSC) ack(msg *discovery.DiscoveryResponse, names []string) {
 	watch := a.watches[msg.TypeUrl]
-	watch.lastNonce = msg.Nonce
+	a.lastNonce = msg.Nonce
 	watch.lastVersion = msg.VersionInfo
 	a.watches[msg.TypeUrl] = watch
 	_ = a.send(&discovery.DiscoveryRequest{
