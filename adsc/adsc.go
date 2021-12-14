@@ -554,6 +554,11 @@ func (a *ADSC) ack(msg *discovery.DiscoveryResponse, names []string) {
 	a.lastNonce = msg.Nonce
 	watch.lastVersion = msg.VersionInfo
 	a.watches[msg.TypeUrl] = watch
+
+	// Incremental EDS can send partial endpoints, but in ack envoy should ack for all.
+	if msg.TypeUrl == resource.EndpointType {
+		names = watch.resources
+	}
 	_ = a.send(&discovery.DiscoveryRequest{
 		ResponseNonce: msg.Nonce,
 		TypeUrl:       msg.TypeUrl,
