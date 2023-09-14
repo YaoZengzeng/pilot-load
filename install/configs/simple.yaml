@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: pilot-load-config
+  namespace: pilot-load-test
 data:
   # Each namespace has 1 20 replica service, 5 10 replica services, and 10 3 replica services. 100 pods each
   # Each service is exposed by a single Gateway, which has 200 instances
@@ -15,20 +16,20 @@ data:
     adsPercentage: 10
     namespaces:
     - name: mesh
-      replicas: 50
+      replicas: 100
       applications:
       - name: big
-        replicas: 1
-        instances: 20
+        replicas: 200
+        instances: 1
         gateways:
           virtualServices: [main]
       - name: medium
-        replicas: 5
-        instances: 10
+        replicas: 500
+        instances: 1
         gateways:
           virtualServices: [main]
       - name: small
-        replicas: 10
-        instances: 3
+        replicas: 300
+        instances: 1
         gateways:
           virtualServices: [main]
