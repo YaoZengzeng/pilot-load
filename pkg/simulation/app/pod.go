@@ -134,17 +134,17 @@ func (p *Pod) getPod() *v1.Pod {
 		},
 		Spec: v1.PodSpec{
 			ServiceAccountName: s.ServiceAccount,
-			InitContainers: []v1.Container{{
-				Name:  "istio-init",
-				Image: "istio/proxyv2",
-			}},
+			/*			InitContainers: []v1.Container{{
+						Name:  "istio-init",
+						Image: "istio/proxyv2",
+					}},*/
 			Containers: []v1.Container{{
 				Name:  "app",
 				Image: "app",
-			}, {
+			}, /* {
 				Name:  "istio-proxy",
 				Image: "istio/proxyv2",
-			}},
+			}*/},
 			NodeName: s.Node,
 		},
 		Status: v1.PodStatus{

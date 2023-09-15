@@ -50,9 +50,9 @@ func (n *KubernetesNamespace) getKubernetesNamespace() *v1.Namespace {
 	return &v1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: s.Name,
-			Labels: map[string]string{
+			/*Labels: map[string]string{
 				"istio-injection": "enabled",
-			},
+			},*/
 		},
 		Status: v1.NamespaceStatus{Phase: v1.NamespaceActive},
 	}

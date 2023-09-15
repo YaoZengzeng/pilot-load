@@ -22,15 +22,9 @@ data:
       - name: big
         replicas: 200
         instances: 2
-        gateways:
-          virtualServices: [main]
       - name: medium
         replicas: 500
         instances: 2
-        gateways:
-          virtualServices: [main]
       - name: small
         replicas: 300
         instances: 2
-        gateways:
-          virtualServices: [main]
